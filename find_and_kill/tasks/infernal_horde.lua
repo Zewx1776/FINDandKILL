@@ -1,7 +1,10 @@
-local utils                    = require "utils.utils"
-local ids                      = require "data.ids"
-local explorer                 = require "utils.explorer"
-local bomber                   = {
+local utils      = require "core.utils"
+local enums      = require "data.enums"
+local settings   = require "core.settings"
+local navigation = require "core.navigation"
+local explorer   = require "core.explorer"
+
+local bomber = {
     enabled = false
 }
 
@@ -328,4 +331,21 @@ function bomber:main_pulse()
     end
 end
 
-return bomber
+local task = {
+    name = "Infernal_horde",
+    shouldExecute = function()
+        -- Check if there is a close enemy
+        local close_enemy = utils.get_closest_enemy()
+        if close_enemy then
+            return false
+        end
+
+        -- Check if the player is on the specific quest
+        return utils.player_on_quest(2023962)
+    end,
+    Execute = function()
+        bomber:main_pulse()
+    end
+}
+
+return task
