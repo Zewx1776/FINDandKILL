@@ -1,10 +1,7 @@
-local utils      = require "core.utils"
-local enums      = require "data.enums"
-local settings   = require "core.settings"
-local navigation = require "core.navigation"
-local explorer   = require "core.explorer"
-
-local bomber = {
+local utils                    = require "utils.utils"
+local ids                      = require "data.ids"
+local explorer                 = require "utils.explorer"
+local bomber                   = {
     enabled = false
 }
 
@@ -86,7 +83,9 @@ function bomber:use_all_spells()
 end
 
 function bomber:bomb_to(pos)
-    -- INPUT ROTATION SHIT
+    explorer:clear_path_and_target()
+    explorer:set_custom_target(pos)
+    explorer:move_to_target()
 end
 
 function bomber:get_target()
@@ -329,14 +328,4 @@ function bomber:main_pulse()
     end
 end
 
-local task = {
-    name = "Infernal_horde",
-    shouldExecute = function()
-        return utils.player_on_quest(2023962)
-    end,
-    Execute = function()
-        bomber:main_pulse()
-    end
-}
-
-return task
+return bomber
